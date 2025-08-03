@@ -84,7 +84,7 @@ export default function Signup() {
         email: data.email,
         password: data.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `https://neo-ride-frontend.vercel.app/auth/callback`,
           data: {
             full_name: data.name,
             phone: data.phone,
