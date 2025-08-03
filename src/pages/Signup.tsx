@@ -117,26 +117,6 @@ export default function Signup() {
             });
             console.log('✅ Customer data saved to MongoDB successfully');
 
-            // Also save to Supabase for backup/compatibility (if tables exist)
-            try {
-              const { error: customerError } = await supabase
-                .from('customers')
-                .insert({
-                  id: authData.user.id,
-                  email: data.email,
-                  full_name: data.name,
-                  phone: data.phone,
-                  created_at: new Date().toISOString(),
-                  updated_at: new Date().toISOString()
-                })
-
-              if (customerError) {
-                console.warn('Supabase customer data insertion warning:', customerError)
-              }
-            } catch (supabaseError) {
-              console.warn('Supabase tables may not exist yet:', supabaseError)
-            }
-
           } else if (role === 'driver') {
             // Save driver data to MongoDB
             await DriverService.createDriver({
@@ -149,30 +129,6 @@ export default function Signup() {
               vehiclePlate: driverData.vehiclePlate
             });
             console.log('✅ Driver data saved to MongoDB successfully');
-
-            // Also save to Supabase for backup/compatibility (if tables exist)
-            try {
-              const { error: driverError } = await supabase
-                .from('drivers')
-                .insert({
-                  id: authData.user.id,
-                  email: data.email,
-                  full_name: data.name,
-                  phone: data.phone,
-                  license_number: driverData.licenseNumber,
-                  vehicle_model: driverData.vehicleModel,
-                  vehicle_plate: driverData.vehiclePlate,
-                  status: 'pending',
-                  created_at: new Date().toISOString(),
-                  updated_at: new Date().toISOString()
-                })
-
-              if (driverError) {
-                console.warn('Supabase driver data insertion warning:', driverError)
-              }
-            } catch (supabaseError) {
-              console.warn('Supabase tables may not exist yet:', supabaseError)
-            }
           }
         } catch (mongoError) {
           console.error('MongoDB insertion error:', mongoError)
